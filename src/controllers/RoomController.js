@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Database = require("../database/config");
 
 module.exports = {
@@ -46,5 +47,11 @@ module.exports = {
         response.render("room", {roomId: roomId, questions: questions, questionsRead: questionsRead});
 
         await db.close();
+    },
+
+    async enter(request, response){
+        const roomId = request.body.roomId;
+
+        response.redirect(`room/${roomId}`);
     }
 };

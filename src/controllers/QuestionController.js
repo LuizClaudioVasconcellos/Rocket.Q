@@ -24,9 +24,11 @@ module.exports = {
                 await db.run(`UPDATE questions SET read = 1 WHERE id = ${questionId}`);
 
             };
+            response.redirect(`/room/${roomId}`);
+        } else{
+            response.render('passincorrect', {roomId: roomId});
         };
 
-        response.redirect(`/room/${roomId}`);
     },
 
     async create(request, response){
