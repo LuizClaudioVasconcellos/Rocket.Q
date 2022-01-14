@@ -34,11 +34,13 @@
             <div class="buttons">
 
                 <div class="button outlined" id="room-id" data-id="<%= roomId %>">
+
                     #<%= roomId %>
+
                         <img src="/images/copy.svg" alt="Copiar numero da sala" />
                 </div>
 
-                <a href="#" class="button">
+                <a href="/create-pass" class="button">
                     <img src="/images/users-white.svg" alt="Criar uma sala" />
                     Criar Sala
                 </a>
@@ -70,6 +72,12 @@
 
                 <div class="questions">
 
+                    <% if(isNoQuestions){ %>
+
+                        <%- include('parts/no-question') %>
+
+                    <% } %>
+
                     <!-- Carrega todas as perguntas "não lidas" -->
                     <% questions.forEach(question=> { %>
 
@@ -82,7 +90,9 @@
                                 </div>
 
                                 <div class="question">
-                                    <p><%= question.title %></p>
+                                    <p>
+                                        <%= question.title %>
+                                    </p>
                                 </div>
                             </div>
 
@@ -100,32 +110,34 @@
 
                         <% }); %>
 
-                        <!-- Carrega todas as perguntas marcadas com lidas -->
+                            <!-- Carrega todas as perguntas marcadas com lidas -->
 
-                        <% questionsRead.forEach(questionRead => { %>
+                            <% questionsRead.forEach(questionRead=> { %>
 
-                            <div class="question-wrapper read">
+                                <div class="question-wrapper read">
 
-                                <div class="question-content">
-    
-                                    <div class="user">
-                                        <img src="/images/user.svg" alt="Avatar" />
+                                    <div class="question-content">
+
+                                        <div class="user">
+                                            <img src="/images/user.svg" alt="Avatar" />
+                                        </div>
+
+                                        <div class="question">
+                                            <p>
+                                                <%= questionRead.title %>
+                                            </p>
+                                        </div>
                                     </div>
-    
-                                    <div class="question">
-                                        <p><%= questionRead.title %></p>
+
+                                    <div class="actions">
+                                        <a href="#" class="check" data-id="<%= questionRead.id %> ">
+                                            <img src="/images/check.svg" alt="Marcar como lida" />
+                                            Pergunta lida
+                                        </a>
                                     </div>
                                 </div>
-    
-                                <div class="actions">
-                                    <a href="#" class="check" data-id="<%= questionRead.id %> ">
-                                        <img src="/images/check.svg" alt="Marcar como lida" />
-                                        Pergunta lida
-                                    </a>
-                                </div>
-                            </div>
 
-                        <% }); %>
+                                <% }); %>
                 </div>
             </section>
 

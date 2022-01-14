@@ -43,8 +43,16 @@ module.exports = {
         const roomId = request.params.room;
         const questions = await db.all(`SELECT * FROM questions WHERE room = ${roomId} and read = 0`);
         const questionsRead = await db.all(`SELECT * FROM questions WHERE room = ${roomId} and read = 1`);
+        let isNoQuestions
 
-        response.render("room", {roomId: roomId, questions: questions, questionsRead: questionsRead});
+        if(questions.length == 0){
+            if(questionsRead.length == 0){
+                isNoQuestions = true
+            }
+        }
+
+        response.render("room", {roomId: roomId, questions: questions, questionsRead: questionsRead, 
+            isNoQuestions: isNoQuestions});
 
         await db.close();
     },
