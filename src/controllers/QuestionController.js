@@ -5,7 +5,7 @@ module.exports = {
     async index(request, response){
         const db = await Database();
         const roomId = request.params.room;
-        const questionId = request.params.room;
+        const questionId = request.params.question;
         const action = request.params.action;
         const password = request.body.password;
         
@@ -16,14 +16,12 @@ module.exports = {
             if(action == "delete"){
 
                 await db.run(`DELETE FROM questions WHERE id = ${questionId}`);
-                console.log(db.run)
 
             }
         
             else if(action == "check"){
 
                 await db.run(`UPDATE questions SET read = 1 WHERE id = ${questionId}`);
-                console.log(db.run)
 
             };
         };
