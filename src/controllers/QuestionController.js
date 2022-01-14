@@ -1,10 +1,53 @@
+const res = require("express/lib/response");
+const Database = require("../database/config");
+
 module.exports = {
-    index(request, response){
+    async index(request, response){
+        const db = await Database();
         const roomId = request.params.room;
         const questionId = request.params.room;
         const action = request.params.action;
         const password = request.body.password;
         
-        console.log(`room = ${roomId}, questionId = ${questionId}, action = ${action}, password = ${password}`);
+        // Verificar se a senha está correta
+        const verifyRoom = await db.get(`SELECT * FROM rooms WHERE id = ${roomId}`);
+
+        if(verifyRoom.pass == password){
+            if(action == "delete"){
+
+                await db.run(`DELETE FROM questions WHERE id = ${questionId}`);
+                console.log(db.run)
+
+            }
+        
+            else if(action == "check"){
+
+                await db.run(`UPDATE questions SET read = 1 WHERE id = ${questionId}`);
+                console.log(db.run)
+
+            };
+        };
+
+        response.redirect(`/room/${roomId}`);
+    },
+
+    async create(request, response){
+        const db = await Database();
+        const question = request.body.question;
+        const roomId = request.params.room;
+
+        db.run(`INSERT INTO questions (
+            title,
+            room,
+            read
+        ) VALUES(
+            "${ question }",
+            ${ roomId },
+            0
+        )`);
+        
+        await db.close();
+
+        response.redirect(`/room/${roomId}`);
     }
 };
